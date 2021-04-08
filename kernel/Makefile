@@ -1,0 +1,2 @@
+kernel:
+	@echo > /dev/null
