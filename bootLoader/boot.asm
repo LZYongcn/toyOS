@@ -36,18 +36,40 @@ _start:
     mov ss, ax
     mov sp, BaseOfStack
 
-    call _clearScreen
+    ; clear screen
+    mov ax, 0x0600   ; ah 06: scroll screen up; al=00: lines to scroll, 0 means clear screen
+    mov bx, 0x0700   ; bh: set background color and forground color
+    mov cx, 0x0000   ; ch = upper row number, cl = left column number
+    mov dx, 0x184f   ; dh = lower row number, dl = right column number; screen = 80 cols x 25 rows
+    int 0x10
 
-    mov cx, startSearchMsgEnd - startSearchMsg   ; cx = number of chars in string
-    mov bp, startSearchMsg ; ES:BP address of string
+    ; set cursor position
+    mov ah, 0x02     ; ah 02, set cursor position
+    mov bh, 0x00     ; page number
+    mov dx, 0x0000   ; ah: row; al: column
+    int 0x10
+
+    mov cx, bootMsgMsgEnd - bootMsgMsg   ; cx = number of chars in string
+    mov bp, bootMsgMsg ; ES:BP address of string
     call _printLine
 
     call _searchloader
     cmp ax, 0
     jz .searchError
 
-    mov cx, foundMsgEnd - foundMsg   ; cx = number of chars in string
-    mov bp, foundMsg ; ES:BP address of string
+    call _copyLoader
+
+    mov bx, 0x000f  ; bh = page number, bl = char color
+    mov ah, 0x03    ; ah 03: get cursor position
+    int 0x10        ; return: dh = row, dl = column
+
+    mov ah, 0x02     ; new line
+    inc dh
+    mov dl, 0x00
+    int 0x10
+
+    mov cx, loadedMsgEnd - loadedMsg   ; cx = number of chars in string
+    mov bp, loadedMsg ; ES:BP address of string
     call _printLine
 
     jmp .end
@@ -57,9 +79,83 @@ _start:
     mov bp, errorMsg ; ES:BP address of string
     call _printLine
 .end:
-    hlt
+    times 3 hlt
     jmp .end
 
+;--- function copy loader
+; ax: cluster number
+_copyLoader:
+    pusha
+.copyBegin:
+    push ax
+    mov ax, 0x0e23
+    mov bx, 0x0000
+    int 0x10
+    pop ax
+
+    add ax, ClusterSecNoOffset
+    mov cl, 1
+    mov bx, TmpBufferAddress
+    mov word [sectorNo], ax
+    call _readSector
+    cld
+    mov cx, 256
+    mov si, TmpBufferAddress
+    mov di, [copiedLoaderBytes]
+    add di, OffsetOfLoader
+    rep movsw
+
+    add word [copiedLoaderBytes], 512
+
+    mov ax, [sectorNo]
+    sub ax, ClusterSecNoOffset
+    call _getNextClusterNo
+
+    cmp ax, 0x0fff
+    jnz .copyBegin
+    popa
+    ret
+
+;--- function get next entry
+; ax: current cluster nomber
+_getNextClusterNo:
+    push bx
+    push cx
+    push dx
+
+    mov bx, 3
+    mul bx 
+    mov bx, 2
+    div bx
+    push dx
+    mov bx, BytePerSec
+    xor dx, dx
+    div bx
+    mov bx, dx
+    push bx
+    add ax, word SectorNoOfFAT1
+    mov cl, 2
+    mov bx, TmpBufferAddress
+    
+    call _readSector
+
+    pop bx
+    mov ax, [bx + TmpBufferAddress]
+
+    pop dx
+    cmp dx, 0
+    jz .clusterEven
+    
+    shr ax, 4
+    jmp .sectorEnd
+
+.clusterEven:
+    and ax, 0x0fff
+.sectorEnd:
+    pop dx
+    pop cx
+    pop bx
+    ret
 
 ;--- function search loader
 _searchloader:
@@ -143,21 +239,6 @@ _printLine:
     popa
     ret
 
-;--- function clear screen
-_clearScreen:
-    mov ax, 0x0600   ; ah 06: scroll screen up; al=00: lines to scroll, 0 means clear screen
-    mov bx, 0x0700   ; bh: set background color and forground color
-    mov cx, 0x0000   ; ch = upper row number, cl = left column number
-    mov dx, 0x184f   ; dh = lower row number, dl = right column number; screen = 80 cols x 25 rows
-    int 0x10
-
-    ; set cursor position
-    mov ah, 0x02     ; ah 02, set cursor position
-    mov bh, 0x00     ; page number
-    mov dx, 0x0000   ; ah: row; al: column
-    int 0x10
-    ret
-
 ;=== read data from floppy
 
 ;--- function: readSector
@@ -194,17 +275,18 @@ _readSector:
     ret
 
 ;=== message
-    errorMsg: db 'ERROR: no loader found'
+    errorMsg: db 'ERR:no loader...'
     errorMsgEnd:
-    foundMsg: db 'found loader'
-    foundMsgEnd:
-    startSearchMsg: db 'start search loader'
-    startSearchMsgEnd:
+    loadedMsg: db 'loader loaded'
+    loadedMsgEnd:
+    bootMsgMsg: db 'start boot'
+    bootMsgMsgEnd:
     loaderFileName: db 'LOADER  BIN'
 
 ;=== variable
     sectorNo dw SectorNoOfRootDir
     rootDirLoopCount dw RootDirSectors
+    copiedLoaderBytes dw 0
 
 ;=== fill whole sector with 0
     times 510 - ($ - $$) db 0

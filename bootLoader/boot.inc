@@ -35,7 +35,7 @@ DIR_fileSizeOffset equ 0x1c
 DIR_fileSizeLen equ 4
 
 
-SectorNoOfFAT1 equ Reserved
+SectorNoOfFAT1 equ ReservedSec
 DirEntryBytes equ 32
 RootDirSectors equ (RootEntryCnt * DirEntryBytes) / BytePerSec ; 14
 SectorNoOfRootDir equ ReservedSec + FatsCnt * SecPerFat ; 19
