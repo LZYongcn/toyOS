@@ -57,6 +57,9 @@ $(BUILT_IN_OBJ): $(SUB_DIRS)
 $(BUILT_IN_TARGET): $(BUILT_IN_OBJ) $(OBJ)
 
 install:
+ifneq ($(u), 1)
+	bash -ic 'cdbox;bochs'
+endif
 	$(Q):
 
 clean:

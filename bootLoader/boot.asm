@@ -1,5 +1,4 @@
 %include "boot.inc"
-
 [org 0x7c00]
 
 ;=== Boot sector
@@ -68,10 +67,6 @@ _start:
     mov dl, 0x00
     int 0x10
 
-    mov cx, loadedMsgEnd - loadedMsg   ; cx = number of chars in string
-    mov bp, loadedMsg ; ES:BP address of string
-    call _printLine
-
     jmp .end
 
 .searchError:
@@ -79,8 +74,7 @@ _start:
     mov bp, errorMsg ; ES:BP address of string
     call _printLine
 .end:
-    times 3 hlt
-    jmp .end
+    jmp BaseOfLoader : OffsetOfLoader
 
 ;--- function copy loader
 ; ax: cluster number
@@ -190,10 +184,7 @@ _searchloader:
     cmp ax, 0
     jz .searchNextEntry
 
-    mov cx, 11   ; cx = number of chars in string
-    mov bp, di ; ES:BP address of string
-    call _printLine
-
+    mov cx, 11
 .cmpFileName:
     cmp cx, 0
     jz .loaderFound
@@ -210,6 +201,11 @@ _searchloader:
 .loaderFound:
     and di, 0xffe0
     mov ax, [es:di + DIR_firstClusterNoOffset] ; return cluster Number if found
+
+    mov cx, 11   ; cx = number of chars in string
+    mov bp, di ; ES:BP address of string
+    call _printLine
+
     ret
 
 .loaderNotFound:
@@ -277,8 +273,6 @@ _readSector:
 ;=== message
     errorMsg: db 'ERR:no loader...'
     errorMsgEnd:
-    loadedMsg: db 'loader loaded'
-    loadedMsgEnd:
     bootMsgMsg: db 'start boot'
     bootMsgMsgEnd:
     loaderFileName: db 'LOADER  BIN'
