@@ -21,6 +21,10 @@ SelectorData32 equ GDT_DESC_DATA32 - GDT_START
 [BITS 16]
 
 _start:
+    mov ah, 0x01
+    mov cx, 0x2607
+    int 0x10
+
     mov cx, loaderMsgEnd - loaderMsg
     mov bp, loaderMsg
     call _printLine
@@ -58,14 +62,19 @@ _start:
     pop ax
 
     call _copyKernel
-    call _newline
+    call _rNewline
     call _getMemInfo
     jc .error
 
-    call _newline
+    call _rNewline
     mov cx, getMemInfoDoneMsgEnd - getMemInfoDoneMsg
     mov bp, getMemInfoDoneMsg
     call _printLine
+
+    mov [Cursor_row], dh
+    mov [Cursor_col], dl
+
+    jmp _goToProtectionMode
 
 .end:
     jmp $
@@ -99,6 +108,8 @@ getMemInfosearchErrorMsg: db 'error when get mem info'
 getMemInfosearchErrorMsgEnd:
 kernelFileName: db 'KERNEL  BIN'
 
+Cursor_row db 0
+Cursor_col db 0
 
 ;--- function get memory info
 ; carry if error
@@ -305,12 +316,12 @@ _printLine:
     ; dh = row, dl = column; cx: num of chars
     int 0x10
 
-    call _newline
+    call _rNewline
 
     popa
     ret
 
-_newline:
+_rNewline:
     push cx
     mov bx, 0x0000
     mov ah, 0x03    ; ah 03: get cursor position
@@ -358,3 +369,140 @@ _readSector:
     add sp, 2
     popa
     ret
+
+
+;==== pm message
+
+gotoLongModeMsg: db 'go to long mode', 0x0a, 0x00
+
+_goToProtectionMode:
+    cli
+    
+    db 0x66
+    lgdt [GDT_PTR]
+
+    mov eax, cr0
+    or eax, 1
+    mov cr0, eax
+
+    ; udpate cs by far jmp
+    jmp SelectorCode32:.p_start
+
+[section .bits32]
+[BITS 32]
+.p_start:
+    mov ax, SelectorData32
+    mov ds, ax
+    mov es, ax
+    mov ss, ax
+    mov esp, BaseOfStack
+
+    call _checkLongMode
+    test eax, eax
+    jz .notSupport
+    jmp .gotoLongMode
+
+.notSupport:
+    hlt
+
+.gotoLongMode:
+    call _pNewline
+    mov ebp, gotoLongModeMsg
+    call _putString
+    jmp $
+
+
+;---
+; es:ebp string address
+_putString:
+    mov ah, [es:ebp]
+    inc ebp
+    cmp ah, 0x00
+    jz .done
+    call _putChar
+    jmp _putString
+.done:
+    ret
+    
+
+;---
+; ah: char to put screen
+_putChar:
+    pushad
+    cmp ah, 0x0d
+    jz .newline
+    cmp ah, 0x0a
+    jz .newline
+    jmp .putOther
+.newline:
+    mov ah, 0x00
+    mov [Cursor_col], ah
+    call _pNewline
+    jmp .end
+.putOther:
+    mov dh, ah
+    xor eax, eax
+    mov al, byte [Cursor_col]
+    mov dl, al
+    mov bh, 2
+    mul bh
+    push ax
+    mov al, [Cursor_row]
+    mov bl, 160
+    mul bl
+    pop bx
+    add bx, ax
+    mov ah, 0x0f
+    mov al, dh
+    mov [0xb8000 + ebx], ax
+
+    xor eax, eax
+    mov al, dl
+    inc al
+    mov bl, 80
+    div bl
+    mov [Cursor_col], ah
+    cmp al, 0
+    jz .end
+    call _pNewline
+.end:
+    popad
+    ret
+
+;---
+_pNewline:
+    push eax
+    push ebx
+    push ecx
+    xor eax, eax
+    mov al, [Cursor_row]
+    inc al
+    mov bl,25
+    div bl
+    mov [Cursor_row], ah
+    cmp al, 0
+    jz .curpage
+    mov ecx, 1000
+.clearDWord:
+    mov dword [ecx * 4 + 0xb8000 - 4], 0x0000
+    loop .clearDWord
+.curpage:
+    pop ecx
+    pop ebx
+    pop eax
+    ret
+
+
+_checkLongMode:
+    mov	eax,	0x80000000
+	cpuid
+	cmp	eax,	0x80000001
+	setnb	al	
+	jb	.checkLMDone
+	mov	eax,	0x80000001
+	cpuid
+	bt	edx,	29
+	setc	al
+.checkLMDone:
+	movzx	eax,	al
+	ret
