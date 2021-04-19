@@ -92,12 +92,20 @@ _copyLoader:
     mov bx, TmpBufferAddress
     mov word [sectorNo], ax
     call _readSector
+    
     cld
+
+    mov ax, BaseOfLoader
+    mov es, ax
+
     mov cx, 256
     mov si, TmpBufferAddress
     mov di, [copiedLoaderBytes]
     add di, OffsetOfLoader
     rep movsw
+
+    mov ax, 0
+    mov es, ax
 
     add word [copiedLoaderBytes], 512
 

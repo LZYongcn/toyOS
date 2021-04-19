@@ -11,7 +11,7 @@ ifneq ($(u),1)
 	hdiutil detach $(PREFIX)/media/boot
 endif
 
-$(TARGET_DIR)/%.o : %.asm %.inc fat12.inc
+$(TARGET_DIR)/%.o : %.asm %.inc fat12.inc common.inc
 	$(AS) $< -o $@
 
 $(TARGET_DIR)/%.o : %.asm
