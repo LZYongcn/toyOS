@@ -13,6 +13,9 @@ ROOT_DIR := $(patsubst %/,%,$(ROOT_DIR))
 $(shell cd $(ROOT_DIR))
 INSTALL_PATH := "../boot.img"
 export AS := nasm
+export LD := ld.lld
+export CFLAG := -mcmodel=large -fno-builtin -target x86_64-linux-elf -c
+export LDFLAG := 
 endif
 
 CUR_DIR := $(shell pwd)
@@ -34,10 +37,10 @@ BUILT_IN_TARGET := $(TARGET_DIR)/$(BUILT_IN_NAME)
 
 BUILT_IN_OBJ += $(foreach dir,$(SUB_DIRS),$(TARGET_DIR)/$(dir)/$(BUILT_IN_NAME))
 
-.PHONY: all, install, clean, __FORCE
+.PHONY: all, run, clean, __FORCE
 
 ifneq ($(sub_make), 1)
-all: __all install
+all: __all run
 else
 all: __all
 endif
@@ -56,11 +59,11 @@ $(BUILT_IN_OBJ): $(SUB_DIRS)
 
 $(BUILT_IN_TARGET): $(BUILT_IN_OBJ) $(OBJ)
 
-install:
+run:
 ifneq ($(u), 1)
 	bash -ic 'cdbox;bochs'
 endif
 	$(Q):
 
 clean:
-	$(Q)rm -rf $(BUILD_DIR)
+	$(Q)rm -f $(BUILD_DIR)/**/*

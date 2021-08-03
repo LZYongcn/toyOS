@@ -65,6 +65,8 @@ _start:
 
     mov ax, SelectorData32
     mov fs, ax
+
+    ; disable protection mode
     mov eax, cr0
     and al, 0xfe
     mov cr0, eax
@@ -213,7 +215,7 @@ _getSVGAInfo:
 .getModeInfoBlock:
     mov ax, [es:si]
     cmp ax, 0xffff
-    jz .finish
+    jz .setVBEMode
 
     push ax
     mov cx, 16
