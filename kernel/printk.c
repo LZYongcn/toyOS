@@ -297,12 +297,22 @@ int color_printk(unsigned int FRcolor, unsigned int BKcolor, const char* fmt, ..
   int i = 0;
   int count = 0;
   int line = 0;
-  va_list args;
-  va_start(args, fmt);
+  //  va_list args;
+  //  va_start(args, fmt);
+  //
+  //  i = vsprintf(buf, fmt, args);
+  //
+  //  va_end(args);
+  char* src = fmt;
+  char* dst = buf;
+  while (*src != '\0') {
+    *dst = *src;
+    dst++;
+    src++;
+    i++;
+  }
 
-  i = vsprintf(buf, fmt, args);
-
-  va_end(args);
+  *dst = '\0';
 
   for (count = 0; count < i || line; count++) {
     ////	add \n \b \t
@@ -322,21 +332,21 @@ int color_printk(unsigned int FRcolor, unsigned int BKcolor, const char* fmt, ..
           g_cursor.YPosition = (g_cursor.YResolution / g_cursor.YCharSize - 1) * g_cursor.YCharSize;
       }
       putchar(
-        g_cursor.FB_addr, g_cursor.XResolution, g_cursor.XPosition * g_cursor.XCharSize, g_cursor.YPosition * g_cursor.YCharSize, FRcolor,
-        BKcolor, ' ');
+        g_cursor.FB_addr, g_cursor.XResolution, g_cursor.XPosition * g_cursor.XCharSize,
+        g_cursor.YPosition * g_cursor.YCharSize, FRcolor, BKcolor, ' ');
     } else if ((unsigned char)*(buf + count) == '\t') {
       line = ((g_cursor.XPosition + 8) & ~(8 - 1)) - g_cursor.XPosition;
 
     Label_tab:
       line--;
       putchar(
-        g_cursor.FB_addr, g_cursor.XResolution, g_cursor.XPosition * g_cursor.XCharSize, g_cursor.YPosition * g_cursor.YCharSize, FRcolor,
-        BKcolor, ' ');
+        g_cursor.FB_addr, g_cursor.XResolution, g_cursor.XPosition * g_cursor.XCharSize,
+        g_cursor.YPosition * g_cursor.YCharSize, FRcolor, BKcolor, ' ');
       g_cursor.XPosition++;
     } else {
       putchar(
-        g_cursor.FB_addr, g_cursor.XResolution, g_cursor.XPosition * g_cursor.XCharSize, g_cursor.YPosition * g_cursor.YCharSize, FRcolor,
-        BKcolor, (unsigned char)*(buf + count));
+        g_cursor.FB_addr, g_cursor.XResolution, g_cursor.XPosition * g_cursor.XCharSize,
+        g_cursor.YPosition * g_cursor.YCharSize, FRcolor, BKcolor, (unsigned char)*(buf + count));
       g_cursor.XPosition++;
     }
 

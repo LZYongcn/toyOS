@@ -11,12 +11,12 @@ void init_screen_param() {
   g_cursor.XCharSize = 8;
   g_cursor.YCharSize = 16;
 
-  g_cursor.FB_addr = (unsigned int *)0xffff800000a00000;
+  g_cursor.FB_addr = (unsigned int*)0xffff800000a00000;
   g_cursor.FB_length = (g_cursor.XResolution * g_cursor.YResolution * 4);
 }
 
 void start_kernel() {
   init_screen_param();
-  color_printk(YELLOW,BLACK,"Hello\t\t World!\n %d", 1024);
+  color_printk(YELLOW, BLACK, "Hello World!", 1024);
   while (1) {};
 }
