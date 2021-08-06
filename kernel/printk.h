@@ -55,6 +55,7 @@ static char* number(char* str, long num, int base, int size, int precision, int 
 
 int vsprintf(char* buf, const char* fmt, va_list args);
 
-int color_printk(unsigned int FRcolor, unsigned int BKcolor, const char* fmt, ...);
+int color_printfk(unsigned int FRcolor, unsigned int BKcolor, const char* fmt, ...);
+int color_printk(unsigned int FRcolor, unsigned int BKcolor, const char* str);
 
 #endif

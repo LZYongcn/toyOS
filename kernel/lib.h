@@ -14,52 +14,52 @@
 #define nop()       __asm__ __volatile__("nop	\n\t")
 #define io_mfence() __asm__ __volatile__("mfence	\n\t" ::: "memory")
 
-struct List {
-  struct List* prev;
-  struct List* next;
+struct Node {
+  struct Node* prev;
+  struct Node* next;
 };
 
-inline void list_init(struct List* list) {
+inline void list_init(struct Node* list) {
   list->prev = list;
   list->next = list;
 }
 
-inline void list_add_to_behind(struct List* entry, struct List* new) ////add to entry behind
+inline void list_add_to_behind(struct Node* entry, struct Node* new_node) /// add to entry behind
 {
-  new->next = entry->next;
-  new->prev = entry;
-  new->next->prev = new;
-  entry->next = new;
+  new_node->next = entry->next;
+  new_node->prev = entry;
+  new_node->next->prev = new_node;
+  entry->next = new_node;
 }
 
-inline void list_add_to_before(struct List* entry, struct List* new) ////add to entry behind
+inline void list_add_to_before(struct Node* entry, struct Node* new_node) /// add to entry before
 {
-  new->next = entry;
-  entry->prev->next = new;
-  new->prev = entry->prev;
-  entry->prev = new;
+  new_node->next = entry;
+  entry->prev->next = new_node;
+  new_node->prev = entry->prev;
+  entry->prev = new_node;
 }
 
-inline void list_del(struct List* entry) {
+inline void list_del(struct Node* entry) {
   entry->next->prev = entry->prev;
   entry->prev->next = entry->next;
 }
 
-inline long list_is_empty(struct List* entry) {
+inline long list_is_empty(struct Node* entry) {
   if (entry == entry->next && entry->prev == entry)
     return 1;
   else
     return 0;
 }
 
-inline struct List* list_prev(struct List* entry) {
+inline struct Node* list_prev(struct Node* entry) {
   if (entry->prev != NULL)
     return entry->prev;
   else
     return NULL;
 }
 
-inline struct List* list_next(struct List* entry) {
+inline struct Node* list_next(struct Node* entry) {
   if (entry->next != NULL)
     return entry->next;
   else
@@ -236,8 +236,8 @@ static inline int strlen(char* String) {
     "cld	\n\t"
     "repne	\n\t"
     "scasb	\n\t"
-    "notl	%0	\n\t"
-    "decl	%0	\n\t"
+    "not	%0	\n\t"
+    "dec	%0	\n\t"
     : "=c"(__res)
     : "D"(String), "a"(0), "0"(0xffffffff)
     :);

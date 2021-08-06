@@ -33,6 +33,7 @@
 
 /* Begin PBXBuildFile section */
 		418AE6DD26BAB1A200682A6F /* font.c in Sources */ = {isa = PBXBuildFile; fileRef = 418AE6DC26BAB1A200682A6F /* font.c */; };
+		418AE76826BBDB2400682A6F /* head.asm in Sources */ = {isa = PBXBuildFile; fileRef = 41D60A6126BA492800854F24 /* head.asm */; };
 		41D60A9526BA5B7D00854F24 /* printk.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D60A5526BA492800854F24 /* printk.c */; };
 		41D60A9626BA5B7D00854F24 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D60A5A26BA492800854F24 /* main.c */; };
 		41D60A9726BA5B9000854F24 /* lib.h in Sources */ = {isa = PBXBuildFile; fileRef = 41D60A5926BA492800854F24 /* lib.h */; };
@@ -58,7 +59,7 @@
 		41D60A5B26BA492800854F24 /* printk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = printk.h; sourceTree = "<group>"; };
 		41D60A5C26BA492800854F24 /* font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = font.h; sourceTree = "<group>"; };
 		41D60A5D26BA492800854F24 /* kernel.lds */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = kernel.lds; sourceTree = "<group>"; };
-		41D60A6126BA492800854F24 /* head.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = head.asm; sourceTree = "<group>"; };
+		41D60A6126BA492800854F24 /* head.asm */ = {isa = PBXFileReference; explicitFileType = sourcecode.nasm; path = head.asm; sourceTree = "<group>"; };
 		41D60A7726BA494A00854F24 /* build */ = {isa = PBXFileReference; lastKnownFileType = folder; name = build; path = ../build; sourceTree = "<group>"; };
 		41D60A9026BA5B6800854F24 /* libsources.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsources.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -241,6 +242,7 @@
 				41D60A9926BA5B9000854F24 /* font.h in Sources */,
 				41D60A9526BA5B7D00854F24 /* printk.c in Sources */,
 				41D60A9626BA5B7D00854F24 /* main.c in Sources */,
+				418AE76826BBDB2400682A6F /* head.asm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

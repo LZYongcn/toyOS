@@ -1,4 +1,5 @@
 extern start_kernel
+extern color_printk
 
 %define ADVANCE_TO(X) times X - ($ - START_OF_KERNEL) db 0
 
@@ -13,7 +14,7 @@ _start:
     ; jmp $
 
 [BITS 64]
-    mov ax, SelectorData64
+    mov ax, SelectorKernelData64
     mov ds, ax
     mov es, ax
     mov fs, ax
@@ -23,7 +24,7 @@ _start:
     lgdt [rel GDT_POINTER]
     lidt [rel IDT_POINTER]
 
-    mov ax, SelectorData64
+    mov ax, SelectorKernelData64
     mov es, ax
     mov ss, ax
     mov ds, ax
@@ -36,7 +37,7 @@ _start:
     mov cr3, rax
 
     mov rax, [rel _address64]
-    push SelectorCode64
+    push SelectorKernelCode64
     push rax
     ret
 
@@ -44,20 +45,119 @@ _address64:
     dq _goto64
 
 _goto64:
-    mov rax, SelectorData64
+    mov rax, SelectorKernelData64
     mov ds, rax
     mov es, rax
     mov gs, rax
     mov ss, rax
     mov rsp, BaseOfStack64
 
+_setup_idt:
+    lea rdx, [rel _unknown_int]
+    mov rax, SelectorKernelCode64 << 16
+    mov ax, dx
+    shr rdx, 16
+    mov cx, dx
+    shl rcx, 16
+    or  rcx, 0x8e00
+    shl rcx, 32
+    or  rax, rcx
+    shr rdx, 16
+    lea rdi, [rel IDT_Table]
+    mov rcx, 256
+.repeat:
+    mov [rdi], rax
+    mov [rdi + 8], rdx
+    add rdi, 0x10
+    dec rcx
+    jne .repeat
+
     mov rax, [rel _address_kernel]
-    push SelectorCode64
+    push SelectorKernelCode64
     push rax
     ret
 
+_setup_tss64:
+    lea rdx, [rel TSS64_Table]
+    xor rax, rax
+    xor rcx, rcx
+    mov rax, 0x89
+    shl rax, 40
+    mov ecx, edx
+
+    shr ecx, 24
+    shl rcx, 56
+    add rax, rcx
+    xor rcx, rcx
+    mov edx, ecx
+
+    and ecx, 0xffffffff
+    shl rcx, 16
+    add rax, rcx
+    add rax, 103
+    lea rdi, [rel GDT_Table]
+
+    mov [rdi + 64], rax
+    shr rdx, 32
+    mov [rdi + 72], rdx
+
+    mov ax, 0x40
+    ltr ax
+
+
 _address_kernel:
     dq start_kernel
+
+;--- default int handler
+_unknown_int:
+    cld
+    push rax
+    push rbx
+    push rcx
+    push rdx
+    push rbp
+    push rdi
+    push rsi
+
+    push r8
+    push r9
+    push r10
+    push r11
+    push r12
+    push r13
+    push r14
+    push r15
+
+    mov rcx, color_printk
+    mov rdx, unknownIntMsg
+    xor rax, rax
+    mov rdi, 0x000000
+    mov rsi, 0xff0000
+    call rcx
+
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop r11
+    pop r10
+    pop r9
+    pop r8
+
+    pop rsi
+    pop rdi
+    pop rbp
+    pop rdx
+    pop rcx
+    pop rbx
+    pop rax
+
+    jmp $
+    iret
+
+
+unknownIntMsg: db 'Unknown interrupt or fault at RIP',`\n`, 0x00
+
 
 ADVANCE_TO(0x1000)
 ;--- page table
@@ -103,8 +203,8 @@ GDT64_DESC_KERNEL_DATA32:    dq 0x00cf_9200_0000_ffff          ;6 KERNEL  Data  
     times 10 dq 0                  ;8 ~ 9 TSS (jmp one segment <7>) in long-mode 128-bit 40
 GDT_END:
 
-SelectorCode64 equ GDT64_DESC_KERNEL_CODE64 - GDT64_DESC_KERNEL_EMPTY64
-SelectorData64 equ GDT64_DESC_KERNEL_DATA64 - GDT64_DESC_KERNEL_EMPTY64
+SelectorKernelCode64 equ GDT64_DESC_KERNEL_CODE64 - GDT64_DESC_KERNEL_EMPTY64
+SelectorKernelData64 equ GDT64_DESC_KERNEL_DATA64 - GDT64_DESC_KERNEL_EMPTY64
 
 GDT_POINTER:
 GDT_LIMIT:  dw  GDT_END - GDT_Table - 1

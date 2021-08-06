@@ -15,8 +15,9 @@ INSTALL_PATH := "../boot.img"
 export CC := gcc
 export AS := nasm
 export LD := ld.lld
-export CFLAG := -mcmodel=large -fno-builtin -target x86_64-linux-elf -c
+export CFLAG := -mcmodel=large -masm=intel -fno-builtin -target x86_64-linux-elf -c
 export LDFLAG :=
+export ASFLAG :=
 endif
 
 CUR_DIR := $(shell pwd)

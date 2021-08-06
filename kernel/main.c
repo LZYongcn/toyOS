@@ -17,6 +17,6 @@ void init_screen_param() {
 
 void start_kernel() {
   init_screen_param();
-  color_printk(YELLOW, BLACK, "Hello World!", 1024);
+  color_printk(YELLOW, BLACK, "Hello World! 1\n");
   while (1) {};
 }

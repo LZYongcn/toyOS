@@ -293,37 +293,19 @@ int vsprintf(char* buf, const char* fmt, va_list args) {
   return str - buf;
 }
 
-int color_printk(unsigned int FRcolor, unsigned int BKcolor, const char* fmt, ...) {
-  int i = 0;
+int color_printk(unsigned int FRcolor, unsigned int BKcolor, const char* str) {
   int count = 0;
   int line = 0;
-  //  va_list args;
-  //  va_start(args, fmt);
-  //
-  //  i = vsprintf(buf, fmt, args);
-  //
-  //  va_end(args);
-  char* src = fmt;
-  char* dst = buf;
-  while (*src != '\0') {
-    *dst = *src;
-    dst++;
-    src++;
-    i++;
-  }
-
-  *dst = '\0';
-
-  for (count = 0; count < i || line; count++) {
-    ////	add \n \b \t
+  for (count = 0; *(str + count) != '\0' || line; count++) {
+    ////  add \n \b \t
     if (line > 0) {
       count--;
       goto Label_tab;
     }
-    if ((unsigned char)*(buf + count) == '\n') {
+    if ((unsigned char)*(str + count) == '\n') {
       g_cursor.YPosition++;
       g_cursor.XPosition = 0;
-    } else if ((unsigned char)*(buf + count) == '\b') {
+    } else if ((unsigned char)*(str + count) == '\b') {
       g_cursor.XPosition--;
       if (g_cursor.XPosition < 0) {
         g_cursor.XPosition = (g_cursor.XResolution / g_cursor.XCharSize - 1) * g_cursor.XCharSize;
@@ -334,7 +316,7 @@ int color_printk(unsigned int FRcolor, unsigned int BKcolor, const char* fmt, ..
       putchar(
         g_cursor.FB_addr, g_cursor.XResolution, g_cursor.XPosition * g_cursor.XCharSize,
         g_cursor.YPosition * g_cursor.YCharSize, FRcolor, BKcolor, ' ');
-    } else if ((unsigned char)*(buf + count) == '\t') {
+    } else if ((unsigned char)*(str + count) == '\t') {
       line = ((g_cursor.XPosition + 8) & ~(8 - 1)) - g_cursor.XPosition;
 
     Label_tab:
@@ -346,7 +328,7 @@ int color_printk(unsigned int FRcolor, unsigned int BKcolor, const char* fmt, ..
     } else {
       putchar(
         g_cursor.FB_addr, g_cursor.XResolution, g_cursor.XPosition * g_cursor.XCharSize,
-        g_cursor.YPosition * g_cursor.YCharSize, FRcolor, BKcolor, (unsigned char)*(buf + count));
+        g_cursor.YPosition * g_cursor.YCharSize, FRcolor, BKcolor, (unsigned char)*(str + count));
       g_cursor.XPosition++;
     }
 
@@ -358,5 +340,15 @@ int color_printk(unsigned int FRcolor, unsigned int BKcolor, const char* fmt, ..
       g_cursor.YPosition = 0;
     }
   }
+  return count;
+}
+
+int color_printfk(unsigned int FRcolor, unsigned int BKcolor, const char* fmt, ...) {
+  int i = 0;
+  va_list args;
+  va_start(args, fmt);
+  i = vsprintf(buf, fmt, args);
+  va_end(args);
+  color_printk(FRcolor, BKcolor, buf);
   return i;
 }
