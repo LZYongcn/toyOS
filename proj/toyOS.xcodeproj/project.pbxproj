@@ -58,7 +58,6 @@
 		41D60A5A26BA492800854F24 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		41D60A5B26BA492800854F24 /* printk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = printk.h; sourceTree = "<group>"; };
 		41D60A5C26BA492800854F24 /* font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = font.h; sourceTree = "<group>"; };
-		41D60A5D26BA492800854F24 /* kernel.lds */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = kernel.lds; sourceTree = "<group>"; };
 		41D60A6126BA492800854F24 /* head.asm */ = {isa = PBXFileReference; explicitFileType = sourcecode.nasm; path = head.asm; sourceTree = "<group>"; };
 		41D60A7726BA494A00854F24 /* build */ = {isa = PBXFileReference; lastKnownFileType = folder; name = build; path = ../build; sourceTree = "<group>"; };
 		41D60A9026BA5B6800854F24 /* libsources.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsources.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,7 +116,6 @@
 				41D60A5C26BA492800854F24 /* font.h */,
 				418AE6DC26BAB1A200682A6F /* font.c */,
 				41D60A6126BA492800854F24 /* head.asm */,
-				41D60A5D26BA492800854F24 /* kernel.lds */,
 				41D60A5926BA492800854F24 /* lib.h */,
 				41D60A5A26BA492800854F24 /* main.c */,
 				41D60A5526BA492800854F24 /* printk.c */,
