@@ -7,7 +7,7 @@ ASFLAG += -f elf64
 
 all: $(OBJ) $(COBJ)
 
-$(TARGET_DIR)/%.o : %.c lib.h
+$(TARGET_DIR)/%.o : %.c gate.h
 	$(CC) $(CFLAG) $< -o $@
 
 $(TARGET_DIR)/%.o : %.asm

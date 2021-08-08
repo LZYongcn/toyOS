@@ -15,11 +15,11 @@ INSTALL_PATH := "../boot.img"
 export CC := clang
 export AS := nasm
 export LD := ld.lld
-export CFLAG := -mcmodel=large -masm=intel -fno-builtin -target x86_64-linux-elf -c
+export CFLAG := -mcmodel=large -fno-builtin -target x86_64-linux-elf -c -mno-sse
 export LDFLAG := -b elf -T $(ROOT_DIR)/kernel.lds
 export ASFLAG :=
 else
-LDFLAG := -b elf -r -T $(ROOT_DIR)/kernel.lds
+LDFLAG := -b elf -r
 endif
 
 CUR_DIR := $(shell pwd)
@@ -43,35 +43,37 @@ BUILT_IN_OBJ := $(foreach sub_dir,$(SUB_DIRS),$(TARGET_DIR)/$(sub_dir)/$(BUILT_I
 .PHONY: all, run, clean, __FORCE
 
 ifneq ($(sub_make), 1)
-all: __all install
+all: __all
 else
 all: __all
 endif
 
 export sub_make := 1
 
-__all: $(BUILT_IN_OBJ) $(BUILT_IN_TARGET)
+__all: $(BUILT_IN_TARGET)
 __FORCE:
 
 $(SUB_DIRS): __FORCE
+	$(info ------------------)
+	$(info enter $@)
 	$(Q)mkdir -p $(TARGET_DIR)/$@
 	$(Q)$(MAKE) -C $@ TARGET_DIR=$(TARGET_DIR)/$@
 	$(Q)$(MAKE) -C $@ -f $(ROOT_MAKE)
 
 $(BUILT_IN_OBJ): $(SUB_DIRS)
 
-$(BUILT_IN_TARGET): $(OBJ)
+$(BUILT_IN_TARGET): $(SUB_DIRS) $(OBJ)
 	$(if $(or $(OBJ),$(foreach obj,$(BUILT_IN_OBJ),$(wildcard $(obj)))),\
-	$(Q)$(LD) $(LDFLAG) -o $@ $(OBJ) $(foreach obj,$(BUILT_IN_OBJ),$(wildcard $(obj))),\
+	$(LD) $(LDFLAG) -o $@ $(OBJ) $(foreach obj,$(BUILT_IN_OBJ),$(wildcard $(obj))),\
 	)
 	
-install:
-	$(Q)hdiutil attach -mountroot $(PREFIX)/media $(PREFIX)/boot.img
-	$(Q)llvm-objcopy -S -R ".eh_frame" -R ".comment" -O binary $(BUILT_IN_TARGET) $(TARGET_DIR)/kernel.bin
-	$(Q)cp $(TARGET_DIR)/kernel.bin $(PREFIX)/media/boot/kernel.bin
+install: $(BUILT_IN_TARGET)
+	hdiutil attach -mountroot $(PREFIX)/media $(PREFIX)/boot.img
+	llvm-objcopy -S -R ".eh_frame" -R ".comment" -O binary $< $(TARGET_DIR)/kernel.bin
+	cp $(TARGET_DIR)/kernel.bin $(PREFIX)/media/boot/kernel.bin
 	
-run:
-	bash -ic 'cdbox;bochs'
+run: install
+	bash -ic 'cdbox;bochs -q'
 
 clean:
-	$(Q)rm -f $(BUILD_DIR)/**/*
+	find $(BUILD_DIR) -type f -maxdepth 10 | xargs rm

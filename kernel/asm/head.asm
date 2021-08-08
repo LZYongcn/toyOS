@@ -1,26 +1,21 @@
 extern start_kernel
 extern color_printk
 
-%define ADVANCE_TO(X) times X - ($ - START_OF_KERNEL) db 0
-
-START_OF_KERNEL:
+%define ADVANCE_TO(X) times X - ($ - $$) db 0
 
 BaseOfStack equ 0x7E00
 BaseOfStack64 equ 0xffff_8000_0000_7E00
-[BITS 32]
-[section .text]
+[BITS 64]
+[section entry]
 global _start
 _start:
-    ; jmp $
-
-[BITS 64]
     mov ax, SelectorKernelData64
     mov ds, ax
     mov es, ax
     mov fs, ax
     mov ss, ax
     mov esp, BaseOfStack
-
+    
     lgdt [rel GDT_POINTER]
     lidt [rel IDT_POINTER]
 
@@ -109,6 +104,7 @@ _address_kernel:
     dq start_kernel
 
 ;--- default int handler
+global _unknown_int
 _unknown_int:
     cld
     push rax

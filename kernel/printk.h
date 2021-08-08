@@ -1,8 +1,6 @@
 #ifndef __PRINTK_H__
 #define __PRINTK_H__
 
-#include "font.h"
-
 #include <stdarg.h>
 
 #define ZEROPAD     1

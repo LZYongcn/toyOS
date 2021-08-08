@@ -32,35 +32,47 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		418AE6DD26BAB1A200682A6F /* font.c in Sources */ = {isa = PBXBuildFile; fileRef = 418AE6DC26BAB1A200682A6F /* font.c */; };
-		418AE76826BBDB2400682A6F /* head.asm in Sources */ = {isa = PBXBuildFile; fileRef = 41D60A6126BA492800854F24 /* head.asm */; };
-		41D60A9526BA5B7D00854F24 /* printk.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D60A5526BA492800854F24 /* printk.c */; };
-		41D60A9626BA5B7D00854F24 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D60A5A26BA492800854F24 /* main.c */; };
-		41D60A9726BA5B9000854F24 /* lib.h in Sources */ = {isa = PBXBuildFile; fileRef = 41D60A5926BA492800854F24 /* lib.h */; };
-		41D60A9826BA5B9000854F24 /* printk.h in Sources */ = {isa = PBXBuildFile; fileRef = 41D60A5B26BA492800854F24 /* printk.h */; };
-		41D60A9926BA5B9000854F24 /* font.h in Sources */ = {isa = PBXBuildFile; fileRef = 41D60A5C26BA492800854F24 /* font.h */; };
+		413A939E26C02B2400C36D21 /* trap.h in Sources */ = {isa = PBXBuildFile; fileRef = 41FBCF2326BE24FC0022F3CF /* trap.h */; };
+		413A939F26C02B2400C36D21 /* gate.h in Sources */ = {isa = PBXBuildFile; fileRef = 41FBCF1B26BE24CA0022F3CF /* gate.h */; };
+		413A93A026C02B2400C36D21 /* font.h in Sources */ = {isa = PBXBuildFile; fileRef = 41FBCF0426BE225C0022F3CF /* font.h */; };
+		413A93A126C02B2400C36D21 /* lib.h in Sources */ = {isa = PBXBuildFile; fileRef = 41FBCF0126BE225C0022F3CF /* lib.h */; };
+		413A93A226C02B2400C36D21 /* printk.h in Sources */ = {isa = PBXBuildFile; fileRef = 41FBCF0326BE225C0022F3CF /* printk.h */; };
+		41FBCF1026BE225C0022F3CF /* font.c in Sources */ = {isa = PBXBuildFile; fileRef = 41FBCEFF26BE225C0022F3CF /* font.c */; };
+		41FBCF1126BE225C0022F3CF /* printk.c in Sources */ = {isa = PBXBuildFile; fileRef = 41FBCF0026BE225C0022F3CF /* printk.c */; };
+		41FBCF1226BE225C0022F3CF /* lib.h in Headers */ = {isa = PBXBuildFile; fileRef = 41FBCF0126BE225C0022F3CF /* lib.h */; };
+		41FBCF1326BE225C0022F3CF /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 41FBCF0226BE225C0022F3CF /* main.c */; };
+		41FBCF1426BE225C0022F3CF /* printk.h in Headers */ = {isa = PBXBuildFile; fileRef = 41FBCF0326BE225C0022F3CF /* printk.h */; };
+		41FBCF1526BE225C0022F3CF /* font.h in Headers */ = {isa = PBXBuildFile; fileRef = 41FBCF0426BE225C0022F3CF /* font.h */; };
+		41FBCF1F26BE24CA0022F3CF /* gate.h in Headers */ = {isa = PBXBuildFile; fileRef = 41FBCF1B26BE24CA0022F3CF /* gate.h */; };
+		41FBCF2426BE24FD0022F3CF /* trap.c in Sources */ = {isa = PBXBuildFile; fileRef = 41FBCF2226BE24FC0022F3CF /* trap.c */; };
+		41FBCF2526BE24FD0022F3CF /* trap.h in Headers */ = {isa = PBXBuildFile; fileRef = 41FBCF2326BE24FC0022F3CF /* trap.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		418AE6DC26BAB1A200682A6F /* font.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = font.c; sourceTree = "<group>"; };
 		41D60A4026BA492800854F24 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; name = Makefile; path = ../Makefile; sourceTree = "<group>"; };
-		41D60A4526BA492800854F24 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
-		41D60A4926BA492800854F24 /* loader.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = loader.asm; sourceTree = "<group>"; };
-		41D60A4A26BA492800854F24 /* loader.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = loader.inc; sourceTree = "<group>"; };
-		41D60A4B26BA492800854F24 /* ards.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = ards.inc; sourceTree = "<group>"; };
-		41D60A4C26BA492800854F24 /* boot.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = boot.asm; sourceTree = "<group>"; };
-		41D60A4D26BA492800854F24 /* common.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = common.inc; sourceTree = "<group>"; };
-		41D60A4E26BA492800854F24 /* boot.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = boot.inc; sourceTree = "<group>"; };
-		41D60A4F26BA492800854F24 /* fat12.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = fat12.inc; sourceTree = "<group>"; };
-		41D60A5326BA492800854F24 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
-		41D60A5526BA492800854F24 /* printk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = printk.c; sourceTree = "<group>"; };
-		41D60A5926BA492800854F24 /* lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lib.h; sourceTree = "<group>"; };
-		41D60A5A26BA492800854F24 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		41D60A5B26BA492800854F24 /* printk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = printk.h; sourceTree = "<group>"; };
-		41D60A5C26BA492800854F24 /* font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = font.h; sourceTree = "<group>"; };
-		41D60A6126BA492800854F24 /* head.asm */ = {isa = PBXFileReference; explicitFileType = sourcecode.nasm; path = head.asm; sourceTree = "<group>"; };
 		41D60A7726BA494A00854F24 /* build */ = {isa = PBXFileReference; lastKnownFileType = folder; name = build; path = ../build; sourceTree = "<group>"; };
 		41D60A9026BA5B6800854F24 /* libsources.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsources.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		41FBCEF226BE225B0022F3CF /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		41FBCEF326BE225B0022F3CF /* loader.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = loader.asm; sourceTree = "<group>"; };
+		41FBCEF426BE225B0022F3CF /* loader.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = loader.inc; sourceTree = "<group>"; };
+		41FBCEF526BE225B0022F3CF /* ards.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = ards.inc; sourceTree = "<group>"; };
+		41FBCEF626BE225B0022F3CF /* boot.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = boot.asm; sourceTree = "<group>"; };
+		41FBCEF726BE225B0022F3CF /* common.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = common.inc; sourceTree = "<group>"; };
+		41FBCEF826BE225B0022F3CF /* boot.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = boot.inc; sourceTree = "<group>"; };
+		41FBCEF926BE225B0022F3CF /* fat12.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = fat12.inc; sourceTree = "<group>"; };
+		41FBCEFC26BE225B0022F3CF /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		41FBCEFD26BE225C0022F3CF /* head.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = head.asm; sourceTree = "<group>"; };
+		41FBCEFE26BE225C0022F3CF /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		41FBCEFF26BE225C0022F3CF /* font.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = font.c; sourceTree = "<group>"; };
+		41FBCF0026BE225C0022F3CF /* printk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = printk.c; sourceTree = "<group>"; };
+		41FBCF0126BE225C0022F3CF /* lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lib.h; sourceTree = "<group>"; };
+		41FBCF0226BE225C0022F3CF /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		41FBCF0326BE225C0022F3CF /* printk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = printk.h; sourceTree = "<group>"; };
+		41FBCF0426BE225C0022F3CF /* font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = font.h; sourceTree = "<group>"; };
+		41FBCF1B26BE24CA0022F3CF /* gate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gate.h; sourceTree = "<group>"; };
+		41FBCF2226BE24FC0022F3CF /* trap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = trap.c; sourceTree = "<group>"; };
+		41FBCF2326BE24FC0022F3CF /* trap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = trap.h; sourceTree = "<group>"; };
+		41FBCF2626BE31940022F3CF /* entry.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = entry.asm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,9 +89,9 @@
 		41D609AA26BA48CE00854F24 = {
 			isa = PBXGroup;
 			children = (
+				41FBCEF126BE225B0022F3CF /* bootLoader */,
+				41FBCEFA26BE225B0022F3CF /* kernel */,
 				41D60A7726BA494A00854F24 /* build */,
-				41D60A4126BA492800854F24 /* bootLoader */,
-				41D60A5226BA492800854F24 /* kernel */,
 				41D60A4026BA492800854F24 /* Makefile */,
 				41D609B426BA48CE00854F24 /* Products */,
 			);
@@ -93,36 +105,49 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		41D60A4126BA492800854F24 /* bootLoader */ = {
+		41FBCEF126BE225B0022F3CF /* bootLoader */ = {
 			isa = PBXGroup;
 			children = (
-				41D60A4526BA492800854F24 /* Makefile */,
-				41D60A4926BA492800854F24 /* loader.asm */,
-				41D60A4A26BA492800854F24 /* loader.inc */,
-				41D60A4B26BA492800854F24 /* ards.inc */,
-				41D60A4C26BA492800854F24 /* boot.asm */,
-				41D60A4D26BA492800854F24 /* common.inc */,
-				41D60A4E26BA492800854F24 /* boot.inc */,
-				41D60A4F26BA492800854F24 /* fat12.inc */,
+				41FBCEF226BE225B0022F3CF /* Makefile */,
+				41FBCEF326BE225B0022F3CF /* loader.asm */,
+				41FBCEF426BE225B0022F3CF /* loader.inc */,
+				41FBCEF526BE225B0022F3CF /* ards.inc */,
+				41FBCEF626BE225B0022F3CF /* boot.asm */,
+				41FBCEF726BE225B0022F3CF /* common.inc */,
+				41FBCEF826BE225B0022F3CF /* boot.inc */,
+				41FBCEF926BE225B0022F3CF /* fat12.inc */,
 			);
 			name = bootLoader;
 			path = ../bootLoader;
 			sourceTree = "<group>";
 		};
-		41D60A5226BA492800854F24 /* kernel */ = {
+		41FBCEFA26BE225B0022F3CF /* kernel */ = {
 			isa = PBXGroup;
 			children = (
-				41D60A5326BA492800854F24 /* Makefile */,
-				41D60A5C26BA492800854F24 /* font.h */,
-				418AE6DC26BAB1A200682A6F /* font.c */,
-				41D60A6126BA492800854F24 /* head.asm */,
-				41D60A5926BA492800854F24 /* lib.h */,
-				41D60A5A26BA492800854F24 /* main.c */,
-				41D60A5526BA492800854F24 /* printk.c */,
-				41D60A5B26BA492800854F24 /* printk.h */,
+				41FBCEFB26BE225B0022F3CF /* asm */,
+				41FBCEFF26BE225C0022F3CF /* font.c */,
+				41FBCF0426BE225C0022F3CF /* font.h */,
+				41FBCF0126BE225C0022F3CF /* lib.h */,
+				41FBCF0226BE225C0022F3CF /* main.c */,
+				41FBCF0026BE225C0022F3CF /* printk.c */,
+				41FBCF0326BE225C0022F3CF /* printk.h */,
+				41FBCEFE26BE225C0022F3CF /* Makefile */,
 			);
 			name = kernel;
 			path = ../kernel;
+			sourceTree = "<group>";
+		};
+		41FBCEFB26BE225B0022F3CF /* asm */ = {
+			isa = PBXGroup;
+			children = (
+				41FBCF2626BE31940022F3CF /* entry.asm */,
+				41FBCF2226BE24FC0022F3CF /* trap.c */,
+				41FBCF2326BE24FC0022F3CF /* trap.h */,
+				41FBCF1B26BE24CA0022F3CF /* gate.h */,
+				41FBCEFC26BE225B0022F3CF /* Makefile */,
+				41FBCEFD26BE225C0022F3CF /* head.asm */,
+			);
+			path = asm;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -132,6 +157,11 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41FBCF1426BE225C0022F3CF /* printk.h in Headers */,
+				41FBCF1226BE225C0022F3CF /* lib.h in Headers */,
+				41FBCF1526BE225C0022F3CF /* font.h in Headers */,
+				41FBCF2526BE24FD0022F3CF /* trap.h in Headers */,
+				41FBCF1F26BE24CA0022F3CF /* gate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,13 +264,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				41D60A9726BA5B9000854F24 /* lib.h in Sources */,
-				41D60A9826BA5B9000854F24 /* printk.h in Sources */,
-				418AE6DD26BAB1A200682A6F /* font.c in Sources */,
-				41D60A9926BA5B9000854F24 /* font.h in Sources */,
-				41D60A9526BA5B7D00854F24 /* printk.c in Sources */,
-				41D60A9626BA5B7D00854F24 /* main.c in Sources */,
-				418AE76826BBDB2400682A6F /* head.asm in Sources */,
+				413A939E26C02B2400C36D21 /* trap.h in Sources */,
+				413A939F26C02B2400C36D21 /* gate.h in Sources */,
+				413A93A026C02B2400C36D21 /* font.h in Sources */,
+				413A93A126C02B2400C36D21 /* lib.h in Sources */,
+				413A93A226C02B2400C36D21 /* printk.h in Sources */,
+				41FBCF1126BE225C0022F3CF /* printk.c in Sources */,
+				41FBCF1326BE225C0022F3CF /* main.c in Sources */,
+				41FBCF1026BE225C0022F3CF /* font.c in Sources */,
+				41FBCF2426BE24FD0022F3CF /* trap.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -379,6 +411,7 @@
 		41D60A9226BA5B6800854F24 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LIBRARY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7UVEB9KPH8;
 				EXECUTABLE_PREFIX = lib;
@@ -390,6 +423,7 @@
 		41D60A9326BA5B6800854F24 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LIBRARY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7UVEB9KPH8;
 				EXECUTABLE_PREFIX = lib;

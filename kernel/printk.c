@@ -3,6 +3,7 @@
 #include "lib.h"
 
 #include <stdarg.h>
+#include "font.h"
 
 char buf[4096] = {0};
 struct Position g_cursor;

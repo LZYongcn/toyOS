@@ -5,7 +5,11 @@ ENTRY(_start)
 SECTIONS
 {
 	. = 0xffff800000000000 + 0x100000;
-	.text 0xffff800000000000 + 0x100000  :
+	entry 0xffff800000000000 + 0x100000 :
+	{
+		entry;
+	}
+	.text :
 	{
 		_text = .;
 		*(.text*)
