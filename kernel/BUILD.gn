@@ -1,0 +1,14 @@
+shared_library("kernel") {
+    sources = [
+        "./font.c",
+        "./main.c",
+        "./printk.c",
+        "./asm/entry.asm",
+        "./asm/head.asm",
+        "./asm/trap.c",
+    ]
+
+    configs = [
+        "//build/config:libConfig"
+    ]
+}

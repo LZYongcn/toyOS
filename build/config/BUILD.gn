@@ -1,0 +1,67 @@
+config("exeConfig") {
+    asmflags = [
+        "-f",
+        "elf64"
+    ]
+
+    ldflags = [
+        "-b",
+        "elf",
+        "-T",
+        rebase_path("//") + "kernel.lds"
+    ]
+
+    cflags = [
+        "-mcmodel=large",
+        "-fno-builtin",
+        "-target",
+        "x86_64-linux-elf",
+        "-mno-sse",
+        "-c",
+    ]
+}
+
+config("libConfig") {
+    asmflags = [
+        "-f",
+        "elf64"
+    ]
+
+    ldflags = [
+        "-b",
+        "elf",
+        "-T",
+        rebase_path("//") + "kernel.lds",
+        "-r"
+    ]
+
+    cflags = [
+        "-mcmodel=large",
+        "-fno-builtin",
+        "-target",
+        "x86_64-linux-elf",
+        "-mno-sse",
+        "-c",
+    ]
+}
+
+config("binConfig") {
+    asmflags = [
+        "-f",
+        "bin"
+    ]
+
+    ldflags = [
+        "-b",
+        "binary"
+    ]
+
+    cflags = [
+        "-mcmodel=large",
+        "-fno-builtin",
+        "-target",
+        "x86_64-linux-elf",
+        "-mno-sse",
+        "-c",
+    ]
+}

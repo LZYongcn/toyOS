@@ -86,7 +86,7 @@ _setup_tss64:
     xor rcx, rcx
     mov edx, ecx
 
-    and ecx, 0xffffffff
+    and ecx, 0x00ffffff
     shl rcx, 16
     add rax, rcx
     add rax, 103

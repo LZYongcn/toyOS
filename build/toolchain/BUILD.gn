@@ -1,0 +1,44 @@
+toolchain("llvm") {
+    default_output_dir = "{{target_out_dir}}"
+
+
+    tool("cc") {
+        command = "clang {{cflags}} {{include_dirs}} -o {{output}} {{source}}"
+        outputs = ["{{source_out_dir}}/{{source_name_part}}.o"]
+        description = "cc {{output}}"
+    }
+
+    tool("asm") {
+        command = "nasm {{asmflags}} {{include_dirs}} -o {{output}} {{source}}"
+        outputs = [
+            "{{source_out_dir}}/{{source_name_part}}.o"
+        ]
+        description = "nasm {{output}}"
+    }
+
+    tool("solink") {
+        default_output_extension = ".lib"
+        command = "ld.lld {{ldflags}} -o {{output}} {{inputs}}"
+        outputs = ["{{output_dir}}/{{target_output_name}}{{output_extension}}"]
+        description = "ld {{output}}"
+    }
+
+    tool("link") {
+        command = "ld.lld {{ldflags}} -o {{output}} {{inputs}}"
+        outputs = ["{{output_dir}}/{{target_output_name}}"]
+        description = "ld {{output}}"
+    }
+
+    tool("alink") {
+        command = "echo {{output}}"
+        outputs = ["{{output_dir}}/{{target_output_name}}"]
+    }
+
+    tool("stamp") {
+        command = "touch {{output}}"
+    }
+
+    toolchain_args = {
+        current_cpu = "x64"
+    }
+}

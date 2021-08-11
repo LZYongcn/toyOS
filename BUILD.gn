@@ -1,0 +1,48 @@
+import("//build/config/global.gni")
+
+action("install") {
+    script = "//build/install.py"
+    outputs = [
+        "$target_out_dir/kernel.bin",
+    ]
+
+    args = [
+        "$source_root",
+        rebase_path(root_out_dir),
+        rebase_path(target_out_dir)
+    ]
+
+    deps = [
+        "//:build"
+    ]
+}
+
+group("build") {
+    deps = [
+        "//:system",
+        "//:bootloader",
+    ]
+}
+
+source_set("bootloader") {
+    sources = [
+        "//bootLoader/boot.asm",
+        "//bootLoader/loader.asm"
+    ]
+
+    configs = [
+        "//build/config:binConfig"
+    ]
+
+    include_dirs = get_path_info(sources, "dir")
+}
+
+executable("system") {
+    deps = [
+        "//kernel:kernel"
+    ]
+
+    configs = [
+        "//build/config:exeConfig"
+    ]
+}

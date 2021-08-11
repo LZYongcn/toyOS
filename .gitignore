@@ -1,7 +1,12 @@
 # General
 .DS_Store
 
-**/build/
+out/*
+
+.idea/
+.vscode/
+VM/fat12/
+VM/bochsout.txt
 
 # Xcode
 #

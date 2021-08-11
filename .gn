@@ -1,0 +1,6 @@
+buildconfig = "//build/config/BUILDCONFIG.gn"
+
+
+default_args = {
+    source_root = rebase_path("//")
+}

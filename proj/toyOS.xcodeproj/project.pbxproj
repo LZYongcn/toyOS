@@ -49,10 +49,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		413A93E426C0FEEA00C36D21 /* BUILD.gn */ = {isa = PBXFileReference; lastKnownFileType = text; name = BUILD.gn; path = ../BUILD.gn; sourceTree = "<group>"; };
 		41D60A4026BA492800854F24 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; name = Makefile; path = ../Makefile; sourceTree = "<group>"; };
 		41D60A7726BA494A00854F24 /* build */ = {isa = PBXFileReference; lastKnownFileType = folder; name = build; path = ../build; sourceTree = "<group>"; };
 		41D60A9026BA5B6800854F24 /* libsources.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libsources.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		41FBCEF226BE225B0022F3CF /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		41FBCEF326BE225B0022F3CF /* loader.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = loader.asm; sourceTree = "<group>"; };
 		41FBCEF426BE225B0022F3CF /* loader.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = loader.inc; sourceTree = "<group>"; };
 		41FBCEF526BE225B0022F3CF /* ards.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = ards.inc; sourceTree = "<group>"; };
@@ -60,9 +60,7 @@
 		41FBCEF726BE225B0022F3CF /* common.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = common.inc; sourceTree = "<group>"; };
 		41FBCEF826BE225B0022F3CF /* boot.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = boot.inc; sourceTree = "<group>"; };
 		41FBCEF926BE225B0022F3CF /* fat12.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = fat12.inc; sourceTree = "<group>"; };
-		41FBCEFC26BE225B0022F3CF /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		41FBCEFD26BE225C0022F3CF /* head.asm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm.asm; path = head.asm; sourceTree = "<group>"; };
-		41FBCEFE26BE225C0022F3CF /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		41FBCEFF26BE225C0022F3CF /* font.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = font.c; sourceTree = "<group>"; };
 		41FBCF0026BE225C0022F3CF /* printk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = printk.c; sourceTree = "<group>"; };
 		41FBCF0126BE225C0022F3CF /* lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lib.h; sourceTree = "<group>"; };
@@ -93,6 +91,7 @@
 				41FBCEFA26BE225B0022F3CF /* kernel */,
 				41D60A7726BA494A00854F24 /* build */,
 				41D60A4026BA492800854F24 /* Makefile */,
+				413A93E426C0FEEA00C36D21 /* BUILD.gn */,
 				41D609B426BA48CE00854F24 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -108,7 +107,6 @@
 		41FBCEF126BE225B0022F3CF /* bootLoader */ = {
 			isa = PBXGroup;
 			children = (
-				41FBCEF226BE225B0022F3CF /* Makefile */,
 				41FBCEF326BE225B0022F3CF /* loader.asm */,
 				41FBCEF426BE225B0022F3CF /* loader.inc */,
 				41FBCEF526BE225B0022F3CF /* ards.inc */,
@@ -131,7 +129,6 @@
 				41FBCF0226BE225C0022F3CF /* main.c */,
 				41FBCF0026BE225C0022F3CF /* printk.c */,
 				41FBCF0326BE225C0022F3CF /* printk.h */,
-				41FBCEFE26BE225C0022F3CF /* Makefile */,
 			);
 			name = kernel;
 			path = ../kernel;
@@ -144,7 +141,6 @@
 				41FBCF2226BE24FC0022F3CF /* trap.c */,
 				41FBCF2326BE24FC0022F3CF /* trap.h */,
 				41FBCF1B26BE24CA0022F3CF /* gate.h */,
-				41FBCEFC26BE225B0022F3CF /* Makefile */,
 				41FBCEFD26BE225C0022F3CF /* head.asm */,
 			);
 			path = asm;
@@ -238,7 +234,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd ../ &&\nmake u=1 &&\nosascript \\\n-e 'tell application \"iTerm\" to activate' \\\n-e 'tell application \"iTerm\" to tell current session of current window to write text \"bash -ic \\\"cdbox;bochs\\\"\"' \\\n";
+			shellScript = "cd ../ &&\nmake run\n";
 		};
 		41D60A9E26BA8EB200854F24 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -255,7 +251,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd ../ &&\nmake u=1\n";
+			shellScript = "cd ../ &&\nmake build\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

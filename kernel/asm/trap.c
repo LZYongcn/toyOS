@@ -257,7 +257,7 @@ void handle_virtualization_exception(unsigned long rsp, unsigned long error_code
 }
 
 void sys_vector_init(void) {
-#define IST 0
+#define IST 1
   
   set_trap_gate(0, IST, divide_error);
   set_trap_gate(1, IST, debug);
@@ -280,6 +280,8 @@ void sys_vector_init(void) {
   set_trap_gate(18, IST, machine_check);
   set_trap_gate(19, IST, SIMD_exception);
   set_trap_gate(20, IST, virtualization_exception);
+  
+#undef IST
 
   // set_system_gate(SYSTEM_CALL_VECTOR,7,system_call);
 }
