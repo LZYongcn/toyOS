@@ -1,0 +1,10 @@
+source_set("memory") {
+    sources = [
+        "./memory.h",
+        "./memory.cc",
+    ]
+
+    configs = [
+        "//build/config:libConfig"
+    ]
+}

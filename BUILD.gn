@@ -1,15 +1,18 @@
 import("//build/config/global.gni")
 
 action("install") {
-    script = "//build/install.py"
+    script = "//build/script/install.py"
     outputs = [
         "$target_out_dir/kernel.bin",
     ]
 
+    depfile =  target_gen_dir + "/" + target_name + ".d"
+
     args = [
         "$source_root",
         rebase_path(root_out_dir),
-        rebase_path(target_out_dir)
+        rebase_path(outputs[0]),
+        rebase_path(depfile),
     ]
 
     deps = [
@@ -17,24 +20,39 @@ action("install") {
     ]
 }
 
-group("build") {
+action("run") {
+    script = "//build/script/run.py"
+    outputs = [target_out_dir + "/.force_run"]
     deps = [
-        "//:system",
-        "//:bootloader",
+        ":install"
     ]
 }
 
-source_set("bootloader") {
-    sources = [
-        "//bootLoader/boot.asm",
-        "//bootLoader/loader.asm"
+action("modify_pbxproj") {
+    script = "//build/script/modify_pbxproj.py"
+    depfile =  target_gen_dir + "/" + target_name + ".d"
+    outputs = [target_out_dir + "/" + target_name]
+    args = [
+        rebase_path(root_out_dir) + "/" + "toyOS.xcodeproj",
+        rebase_path(outputs[0]),
+        rebase_path(depfile),
+        rebase_path(root_out_dir),
     ]
+}
 
-    configs = [
-        "//build/config:binConfig"
+group("phony") {
+    deps = [
+        "//build/phony:build_proxy",
+        "//build/phony:run_proxy",
     ]
+}
 
-    include_dirs = get_path_info(sources, "dir")
+group("build") {
+    public_deps = [
+        "//:system",
+        "//bootLoader:bootloader",
+        "//:modify_pbxproj"
+    ]
 }
 
 executable("system") {

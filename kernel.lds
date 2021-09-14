@@ -5,18 +5,19 @@ ENTRY(_start)
 SECTIONS
 {
 	. = 0xffff800000000000 + 0x100000;
+
+	_text = .;
 	entry 0xffff800000000000 + 0x100000 :
 	{
-		entry;
+		*(entry);
 	}
 	.text :
 	{
-		_text = .;
 		*(.text*)
-
-		_etext = .;
 	}
+	_etext = .;
 	. = ALIGN(8);
+
 	.data :
 	{
 		_data = .;
@@ -24,6 +25,14 @@ SECTIONS
 		
 		_edata = .;
 	}
+
+	.rodata :
+	{
+		_rodata = .;
+		*(.rodata*)
+		_erodata = .;
+	}
+
 	.bss :
 	{
 		_bss = .;

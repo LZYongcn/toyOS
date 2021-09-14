@@ -1,11 +1,25 @@
 shared_library("kernel") {
     sources = [
-        "./font.c",
-        "./main.c",
-        "./printk.c",
+        "./font.h",
+        "./font.cc",
+        "./lib.h",
+        "./main.cc",
+        "./printk.h",
+        "./printk.cc",
+        "./asm/gate.h",
         "./asm/entry.asm",
         "./asm/head.asm",
-        "./asm/trap.c",
+        "./asm/trap.h",
+        "./asm/trap.cc",
+    ]
+
+    inputs = [
+        "//kernel.lds"
+    ]
+
+    deps = [
+        "./memory:memory",
+        "./task:task"
     ]
 
     configs = [

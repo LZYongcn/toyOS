@@ -1,3 +1,5 @@
+GN=/Users/lizhengyong/google/depot_tools/gn
+
 install: 
 	ninja -C out install -v
 
@@ -5,12 +7,12 @@ build:
 	ninja -C out build -v
 
 gen:
-	gn gen ./out
+	${GN} gen ./out --ide=xcode --xcode-project=toyOS --xcode-build-system=new
 
 run: install
-	bash -ic 'cdbox;bochs -q'
+	ninja -C out run -v
 
 clean:
-	find ./out -type file | xargs rm
+	${GN} clean out
 
 .PHONY: build install run clean gen

@@ -1,6 +1,6 @@
 ;--- Address Range Descriptor Structure，ARDS
-AddressOfARDSCnt equ 0x8000
-AddressOffsetOfARDSs equ 0x8004
+AddressOfARDSCnt equ 0x7e00
+AddressOffsetOfARDSs equ 0x7e04
 ARDS_sizePerDs equ 20
 ARDS_baseAddrLow32Offset equ 0
 ARDS_baseAddrHigh32Offset equ 4

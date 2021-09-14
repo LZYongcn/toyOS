@@ -3,6 +3,9 @@
 
 out/*
 
+**/__pycache__/*
+**/.idea/*
+
 .idea/
 .vscode/
 VM/fat12/

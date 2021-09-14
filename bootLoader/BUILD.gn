@@ -1,0 +1,17 @@
+source_set("bootloader") {
+    sources = [
+        "./boot.asm",
+        "./loader.asm",
+        "./boot.inc",
+        "./loader.inc",
+        "./common.inc",
+        "./ards.inc",
+        "./fat12.inc",
+    ]
+
+    configs = [
+        "//build/config:binConfig"
+    ]
+
+    include_dirs = get_path_info(sources, "dir")
+}

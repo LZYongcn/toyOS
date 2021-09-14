@@ -94,13 +94,14 @@ _start:
     mov cx, getMemInfoDoneMsgEnd - getMemInfoDoneMsg
     mov bp, getMemInfoDoneMsg
     call _rPrintLine
-
+    
     mov [Cursor_row], dh
     mov [Cursor_col], dl
 
     mov ax, 0x100
     mov cx, 10
     call _rPrintInt
+    call _setVBEMode
 
     jmp _goToProtectionMode
 
@@ -215,7 +216,7 @@ _getSVGAInfo:
 .getModeInfoBlock:
     mov ax, [es:si]
     cmp ax, 0xffff
-    jz .setVBEMode
+    jz .finish
 
     push ax
     mov cx, 16
@@ -237,16 +238,23 @@ _getSVGAInfo:
 
     jmp .getModeInfoBlock
 
-.setVBEMode:
+.finish:
+    popa
+    ret
+    
+_setVBEMode:
     mov ax, 0x4F02
     mov bx, 0x4180 ; mode: 180
     int     0x10
     cmp ax, 0x004F
     jnz .failed
-
-.finish:
-    popa
     ret
+    
+.failed:
+    mov cx, errorMsgEnd - errorMsg
+    mov bp, errorMsg
+    call _rPrintLine
+    jmp $
 
 ;--- function copy kernel
 ; ax: cluster number

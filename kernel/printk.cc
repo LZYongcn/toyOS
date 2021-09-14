@@ -1,14 +1,15 @@
 #include "printk.h"
 
+#include "font.h"
 #include "lib.h"
 
 #include <stdarg.h>
-#include "font.h"
 
 char buf[4096] = {0};
 struct Position g_cursor;
 
-void putchar(unsigned int* fb, int Xsize, int x, int y, unsigned int FRcolor, unsigned int BKcolor, unsigned char font) {
+extern "C" void
+putchar(unsigned int* fb, int Xsize, int x, int y, unsigned int FRcolor, unsigned int BKcolor, unsigned char font) {
   int i = 0, j = 0;
   unsigned int* addr = NULL;
   unsigned char* fontp = NULL;
@@ -118,7 +119,8 @@ static char* number(char* str, long num, int base, int size, int precision, int 
 }
 
 int vsprintf(char* buf, const char* fmt, va_list args) {
-  char *str, *s;
+  char* str;
+  const char* s;
   int flags;
   int field_width;
   int precision;
@@ -271,7 +273,7 @@ int vsprintf(char* buf, const char* fmt, va_list args) {
           *ip = (str - buf);
         } else {
           int* ip = va_arg(args, int*);
-          *ip = (str - buf);
+          *ip = (int)(str - buf);
         }
         break;
 
@@ -291,10 +293,10 @@ int vsprintf(char* buf, const char* fmt, va_list args) {
     }
   }
   *str = '\0';
-  return str - buf;
+  return (int)(str - buf);
 }
 
-int color_printk(unsigned int FRcolor, unsigned int BKcolor, const char* str) {
+extern "C" int color_printk(unsigned int FRcolor, unsigned int BKcolor, const char* str) {
   int count = 0;
   int line = 0;
   for (count = 0; *(str + count) != '\0' || line; count++) {
@@ -344,12 +346,25 @@ int color_printk(unsigned int FRcolor, unsigned int BKcolor, const char* str) {
   return count;
 }
 
+int color_printk_args(unsigned int FRcolor, unsigned int BKcolor, const char* fmt, va_list args) {
+  int i = 0;
+  i = vsprintf(buf, fmt, args);
+  color_printk(FRcolor, BKcolor, buf);
+  return i;
+}
+
+int printf(const char* fmt, ...) {
+  va_list args;
+  va_start(args, fmt);
+  va_end(args);
+  return color_printk_args(WHITE, BLACK, fmt, args);
+}
+
 int color_printfk(unsigned int FRcolor, unsigned int BKcolor, const char* fmt, ...) {
   int i = 0;
   va_list args;
   va_start(args, fmt);
-  i = vsprintf(buf, fmt, args);
+  i = color_printk_args(FRcolor, BKcolor, fmt, args);
   va_end(args);
-  color_printk(FRcolor, BKcolor, buf);
   return i;
 }

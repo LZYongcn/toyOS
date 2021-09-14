@@ -1,13 +1,11 @@
 #ifndef __GATE_H__
 #define __GATE_H__
 
-typedef struct
-{
+typedef struct {
   unsigned char x[8];
 } desc_struct;
 
-typedef struct
-{
+typedef struct {
   unsigned char x[16];
 } gate_struct;
 
@@ -17,7 +15,6 @@ extern unsigned long TSS64_Table[26];
 
 #define _set_gate(gate_selector_addr, attr, ist, code_addr)                                                  \
   do {                                                                                                       \
-    unsigned long __d0, __d1;                                                                                \
     __asm__ __volatile__(                                                                                    \
       "movw %%dx, %%ax \n\t"                                                                                 \
       "shr $16, %%rdx \n\t"                                                                                  \
@@ -31,8 +28,8 @@ extern unsigned long TSS64_Table[26];
       "movq %%rax, %0 \n\t"                                                                                  \
       "movq %%rdx, %1 \n\t"                                                                                  \
       : "=m"(*((unsigned long*)gate_selector_addr)), "=m"(*((unsigned long*)(gate_selector_addr + 1)))       \
-      : "r"((long)ist), "i"(attr << 8), "d"((unsigned long*)(code_addr)), "a"(0x08 << 16) \
-      :"cx");                                                                                           \
+      : "r"((long)ist), "i"(attr << 8), "d"((unsigned long*)(code_addr)), "a"(0x08 << 16)                    \
+      : "cx");                                                                                               \
   } while (0)
 
 #define load_TR(n)                                                                                           \
@@ -40,15 +37,15 @@ extern unsigned long TSS64_Table[26];
     __asm__ __volatile__("ltr	ax" : : "a"(n << 3) : "memory");                                             \
   } while (0)
 
-static inline void set_intr_gate(unsigned int n, unsigned char ist, void* addr) {
+static inline void set_intr_gate(unsigned int n, unsigned char ist, void (*addr)()) {
   _set_gate(IDT_Table + 2 * n, 0x8E, ist, addr); // P,DPL=0,TYPE=E
 }
 
-static inline void set_trap_gate(unsigned int n, unsigned char ist, void* addr) {
+static inline void set_trap_gate(unsigned int n, unsigned char ist, void (*addr)()) {
   _set_gate(IDT_Table + 2 * n, 0x8F, ist, addr); // P,DPL=0,TYPE=F
 }
 
-static inline void set_system_gate(unsigned int n, unsigned char ist, void* addr) {
+static inline void set_system_gate(unsigned int n, unsigned char ist, void (*addr)()) {
   _set_gate(IDT_Table + 2 * n, 0xEF, ist, addr); // P,DPL=3,TYPE=F
 }
 

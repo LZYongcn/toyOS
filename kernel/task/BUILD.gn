@@ -1,0 +1,9 @@
+source_set("task") {
+    sources = [
+        
+    ]
+
+    configs = [
+        "//build/config:libConfig"
+    ]
+}

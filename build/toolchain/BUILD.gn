@@ -8,6 +8,12 @@ toolchain("llvm") {
         description = "cc {{output}}"
     }
 
+    tool("cxx") {
+        command = "clang {{cflags_cc}} {{include_dirs}} -o {{output}} {{source}}"
+        outputs = ["{{source_out_dir}}/{{source_name_part}}.o"]
+        description = "cc {{output}}"
+    }
+
     tool("asm") {
         command = "nasm {{asmflags}} {{include_dirs}} -o {{output}} {{source}}"
         outputs = [

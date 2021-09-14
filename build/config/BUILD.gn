@@ -11,13 +11,15 @@ config("exeConfig") {
         rebase_path("//") + "kernel.lds"
     ]
 
-    cflags = [
+
+    cflags_cc = [
         "-mcmodel=large",
         "-fno-builtin",
         "-target",
         "x86_64-linux-elf",
         "-mno-sse",
         "-c",
+        "-std=c++17",
     ]
 }
 
@@ -35,13 +37,14 @@ config("libConfig") {
         "-r"
     ]
 
-    cflags = [
+    cflags_cc = [
         "-mcmodel=large",
         "-fno-builtin",
         "-target",
         "x86_64-linux-elf",
         "-mno-sse",
         "-c",
+        "-std=c++17",
     ]
 }
 
@@ -56,12 +59,13 @@ config("binConfig") {
         "binary"
     ]
 
-    cflags = [
+    cflags_cc = [
         "-mcmodel=large",
         "-fno-builtin",
         "-target",
         "x86_64-linux-elf",
         "-mno-sse",
         "-c",
+        "-std=c++17",
     ]
 }

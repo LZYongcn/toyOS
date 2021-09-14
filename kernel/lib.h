@@ -89,7 +89,7 @@ inline void* memcpy(void* From, void* To, long Num) {
 }
 
 inline int memcmp(void* FirstPart, void* SecondPart, long Count) {
-  register int __res;
+  int __res;
 
   __asm__ __volatile__(
     "cld	\n\t" // clean direct
@@ -182,7 +182,7 @@ inline char* strcat(char* Dest, char* Src) {
 }
 
 inline int strcmp(char* FirstPart, char* SecondPart) {
-  register int __res;
+  int __res;
   __asm__ __volatile__(
     "cld	\n\t"
     "1:	\n\t"
@@ -205,7 +205,7 @@ inline int strcmp(char* FirstPart, char* SecondPart) {
 }
 
 static inline int strncmp(char* FirstPart, char* SecondPart, long Count) {
-  register int __res;
+  int __res;
   __asm__ __volatile__(
     "cld	\n\t"
     "1:	\n\t"
@@ -230,8 +230,8 @@ static inline int strncmp(char* FirstPart, char* SecondPart, long Count) {
   return __res;
 }
 
-static inline int strlen(char* String) {
-  register int __res;
+static inline int strlen(const char* String) {
+  int __res;
   __asm__ __volatile__(
     "cld	\n\t"
     "repne	\n\t"

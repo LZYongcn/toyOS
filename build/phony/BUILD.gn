@@ -1,0 +1,27 @@
+executable("build_proxy") {
+    sources = [
+        "./build_proxy.cc"
+    ]
+
+    deps = [
+        "//:build"
+    ]
+
+    configs = [
+        "//build/config:exeConfig"
+    ]
+}
+
+executable("run_proxy") {
+    sources = [
+        "./run_proxy.cc"
+    ]
+
+    deps = [
+        "//:run"
+    ]
+
+    configs = [
+        "//build/config:exeConfig"
+    ]
+}
