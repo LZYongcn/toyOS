@@ -3,26 +3,67 @@
 
 static unsigned long* Global_CR3 = nullptr;
 
+constexpr int MAX_E820S = 32;
+
 struct E820 {
   unsigned long address;
   unsigned long length;
   unsigned int type;
 } __attribute__((packed));
 
+////struct page attribute (alloc_pages flags)
+constexpr unsigned long PG_PTable_Maped = (1UL << 0);
+constexpr unsigned long PG_Kernel_Init = (1UL << 1);
+constexpr unsigned long PG_Referenced = (1UL << 2);
+constexpr unsigned long PG_Dirty = (1UL << 3);
+constexpr unsigned long PG_Active = (1UL << 4);
+constexpr unsigned long PG_Up_To_Date = (1UL << 5);
+constexpr unsigned long PG_Device = (1UL << 6);
+constexpr unsigned long PG_Kernel = (1UL << 7);
+constexpr unsigned long PG_K_Share_To_U = (1UL << 8);
+constexpr unsigned long PG_Slab = (1UL << 9);
+
+struct Page {
+  struct Zone* zone_struct;
+  unsigned long PHY_address;
+  unsigned long attribute;
+
+  unsigned long reference_count;
+
+  unsigned long age;
+};
+
+struct Zone {
+  struct Page* pages_group;
+  unsigned long pages_count;
+
+  unsigned long zone_start_address;
+  unsigned long zone_end_address;
+  unsigned long zone_length;
+  unsigned long attribute;
+
+  struct Global_Memory_Descriptor* GMD_struct;
+
+  unsigned long page_using_count;
+  unsigned long page_free_count;
+
+  unsigned long total_pages_link;
+};
+
 typedef struct Global_Memory_Descriptor {
-  struct E820 e820[32];
-  unsigned long e820_length;
+  struct E820 e820[MAX_E820S];
+  unsigned long e820_count;
 
   unsigned long* bits_map;
-  unsigned long bits_size;
+  unsigned long bits_count;
   unsigned long bits_length;
 
   struct Page* pages_struct;
-  unsigned long pages_size;
+  unsigned long pages_count;
   unsigned long pages_length;
 
   struct Zone* zones_struct;
-  unsigned long zones_size;
+  unsigned long zones_count;
   unsigned long zones_length;
 
   unsigned long start_code, end_code, end_data, end_brk;
@@ -157,5 +198,25 @@ static inline void set_pt(pt_t* ptptr, const pt_t& ptval) {
 }
 
 extern "C" void init_memory(void);
+
+static inline void flush_tlb(unsigned long addr) {
+  __asm__ __volatile__("invlpg  (%0)  \n\t" ::"r"(addr) : "memory");
+}
+
+static inline void flush_tlb_all() {
+  unsigned long tmpreg;
+  __asm__ __volatile__(
+    "movq  %%cr3,  %0  \n\t"
+    "movq  %0,  %%cr3  \n\t"
+    : "=r"(tmpreg)
+    :
+    : "memory");
+}
+
+static inline unsigned long* Get_pgd() {
+  unsigned long* tmp;
+  __asm__ __volatile__("movq  %%cr3,  %0  \n\t" : "=r"(tmp) : : "memory");
+  return tmp;
+}
 
 #endif

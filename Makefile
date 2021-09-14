@@ -15,4 +15,7 @@ run: install
 clean:
 	${GN} clean out
 
+test:
+	echo ${PATH}
+
 .PHONY: build install run clean gen

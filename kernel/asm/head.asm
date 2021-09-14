@@ -67,38 +67,37 @@ _setup_idt:
     dec rcx
     jne .repeat
 
-    mov rax, [rel _address_kernel]
-    push SelectorKernelCode64
-    push rax
-    ret
-
 _setup_tss64:
     lea rdx, [rel TSS64_Table]
     xor rax, rax
     xor rcx, rcx
     mov rax, 0x89
     shl rax, 40
-    mov ecx, edx
 
+    mov ecx, edx
     shr ecx, 24
     shl rcx, 56
-    add rax, rcx
-    xor rcx, rcx
-    mov edx, ecx
+    or  rax, rcx
 
-    and ecx, 0x00ffffff
+    xor rcx, rcx
+    mov ecx, edx
+    and ecx, 0x00ff_ffff
     shl rcx, 16
-    add rax, rcx
-    add rax, 103
+    or  rax, rcx
+
+    or  rax, 103
     lea rdi, [rel GDT_Table]
 
-    mov [rdi + 64], rax
-    shr rdx, 32
-    mov [rdi + 72], rdx
+    mov [rdi + 0x40], rax
 
     mov ax, 0x40
     ltr ax
 
+
+    mov rax, [rel _address_kernel]
+    push SelectorKernelCode64
+    push rax
+    ret
 
 _address_kernel:
     dq start_kernel
@@ -158,14 +157,14 @@ unknownIntMsg: db 'Unknown interrupt or fault at RIP',`\n`, 0x00
 ADVANCE_TO(0x1000)
 ;--- page table
 __PML4E:
-    dq 0x10_2007
+    dq 0x0010_2007
     times 255 dq 0
-    dq 0x10_2007
+    dq 0x0010_2007
     times 255 dq 0
 
 ADVANCE_TO(0x2000)
 __PDPTE:
-    dq 0x10_3003
+    dq 0x0010_3003
     times 511 dq 0
 
 ADVANCE_TO(0x3000)
