@@ -1,4 +1,4 @@
-GN=/Users/lizhengyong/google/depot_tools/gn
+GN=/Users/lizhengyong/google/gn
 
 install: 
 	ninja -C out install -v
