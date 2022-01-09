@@ -7,7 +7,7 @@ build:
 	ninja -C out build -v
 
 gen:
-	${GN} gen ./out --ide=xcode --xcode-project=toyOS --xcode-build-system=new
+	${GN} gen ./out --ide=xcode --xcode-project=toyOS --xcode-build-system=new --export-compile-commands
 
 run: install
 	ninja -C out run -v
